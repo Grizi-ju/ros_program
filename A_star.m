@@ -3,92 +3,92 @@ clc
 clear
 close all
 
-%% »­µØÍ¼
+%% ç”»åœ°å›¾
 
-% Õ¤¸ñµØÍ¼µÄĞĞÊı¡¢ÁĞÊı¶¨Òå
+% æ …æ ¼åœ°å›¾çš„è¡Œæ•°ã€åˆ—æ•°å®šä¹‰
 m = 5;
 n = 7;
-start_node = [2, 3];%Æğµã
-target_node = [6, 3];%ÖÕµã
-obs = [4,2; 4,3; 4,4];%ÕÏ°­Îï
-%»­Õ¤¸ñºáÏß
+start_node = [2, 3];%èµ·ç‚¹
+target_node = [6, 3];%ç»ˆç‚¹
+obs = [4,2; 4,3; 4,4];%éšœç¢ç‰©
+%ç”»æ …æ ¼æ¨ªçº¿
 for i = 1:m
     plot([0,n], [i, i], 'k');
     hold on
 end
- %»­Õ¤¸ñÊúÏß   
+ %ç”»æ …æ ¼ç«–çº¿   
 for j = 1:n
      plot([j, j], [0, m], 'k');
 end
 
-axis equal%µÈ±È×ø±êÖá£¬Ê¹µÃÃ¿¸ö×ø±êÖá¶¼¾ßÓĞ¾ùÔÈµÄ¿Ì¶È¼ä¸ô
+axis equal%ç­‰æ¯”åæ ‡è½´ï¼Œä½¿å¾—æ¯ä¸ªåæ ‡è½´éƒ½å…·æœ‰å‡åŒ€çš„åˆ»åº¦é—´éš”
 xlim([0, n]);
-ylim([0, m]); %xyÖáÉÏÏÂÏŞ  
+ylim([0, m]); %xyè½´ä¸Šä¸‹é™  
 
-% »æÖÆÕÏ°­Îï¡¢ÆğÖ¹µãÑÕÉ«¿é
+% ç»˜åˆ¶éšœç¢ç‰©ã€èµ·æ­¢ç‚¹é¢œè‰²å—
 fill([start_node(1)-1, start_node(1), start_node(1), start_node(1)-1],...
     [start_node(2)-1, start_node(2)-1 , start_node(2), start_node(2)], 'g');
 
 fill([target_node(1)-1, target_node(1), target_node(1), target_node(1)-1],...
     [target_node(2)-1, target_node(2)-1 , target_node(2), target_node(2)], 'r');
 
-for i = 1:size(obs,1)%·µ»Ø¾ØÕóĞĞÊı
+for i = 1:size(obs,1)%è¿”å›çŸ©é˜µè¡Œæ•°
     temp = obs(i,:);
     fill([temp(1)-1, temp(1), temp(1), temp(1)-1],...
         [temp(2)-1, temp(2)-1 , temp(2), temp(2)], 'b');
 end
 
-%% Ô¤´¦Àí
+%% é¢„å¤„ç†
 
-% ³õÊ¼»¯closeList
+% åˆå§‹åŒ–closeList
 closeList = start_node;
 closeList_path = {start_node,start_node};
 closeList_cost = 0;
-child_nodes = child_nodes_cal(start_node,  m, n, obs, closeList); %×Ó½ÚµãËÑË÷º¯Êı 
+child_nodes = child_nodes_cal(start_node,  m, n, obs, closeList); %å­èŠ‚ç‚¹æœç´¢å‡½æ•° 
 
-% ³õÊ¼»¯openList
+% åˆå§‹åŒ–openList
 openList = child_nodes;
 for i = 1:size(openList,1)
     openList_path{i,1} = openList(i,:);
-    openList_path{i,2} = [start_node;openList(i,:)];%´Ó³õÊ¼µãµ½µÚi¸ö×Ó½Úµã
+    openList_path{i,2} = [start_node;openList(i,:)];%ä»åˆå§‹ç‚¹åˆ°ç¬¬iä¸ªå­èŠ‚ç‚¹
 end
 
 for i = 1:size(openList, 1)
-    g = norm(start_node - openList(i,1:2));%normÇó·¶Êı£¬·µ»Ø×î´óÆæÒìÖµ£»absÇó¾ø¶ÔÖµ
+    g = norm(start_node - openList(i,1:2));%normæ±‚èŒƒæ•°ï¼Œè¿”å›æœ€å¤§å¥‡å¼‚å€¼ï¼›absæ±‚ç»å¯¹å€¼
     h = abs(target_node(1) - openList(i,1)) + abs(target_node(2) - openList(i,2));
-    %ÖÕµãºá×ø±ê¾àÀë¼Ó×İ×ø±ê¾àÀë
+    %ç»ˆç‚¹æ¨ªåæ ‡è·ç¦»åŠ çºµåæ ‡è·ç¦»
     f = g + h;
     openList_cost(i,:) = [g, h, f];
 end
 
-%% ¿ªÊ¼ËÑË÷
-% ´ÓopenList¿ªÊ¼ËÑË÷ÒÆ¶¯´ú¼Û×îĞ¡µÄ½Úµã
-[~, min_idx] = min(openList_cost(:,3));%Êä³öopenlist_cost±íÖĞ×îĞ¡ÖµµÄÎ»ÖÃ
-parent_node = openList(min_idx,:);%¸¸½ÚµãÎª´ú¼Û×îĞ¡½Úµã
+%% å¼€å§‹æœç´¢
+% ä»openListå¼€å§‹æœç´¢ç§»åŠ¨ä»£ä»·æœ€å°çš„èŠ‚ç‚¹
+[~, min_idx] = min(openList_cost(:,3));%è¾“å‡ºopenlist_costè¡¨ä¸­æœ€å°å€¼çš„ä½ç½®
+parent_node = openList(min_idx,:);%çˆ¶èŠ‚ç‚¹ä¸ºä»£ä»·æœ€å°èŠ‚ç‚¹
 
 
-%% ½øÈëÑ­»·
+%% è¿›å…¥å¾ªç¯
 flag = 1;
 while flag   
     
-    % ÕÒ³ö¸¸½ÚµãµÄºöÂÔcloseListµÄ×Ó½Úµã
+    % æ‰¾å‡ºçˆ¶èŠ‚ç‚¹çš„å¿½ç•¥closeListçš„å­èŠ‚ç‚¹
     child_nodes = child_nodes_cal(parent_node,  m, n, obs, closeList); 
     
-    % ÅĞ¶ÏÕâĞ©×Ó½ÚµãÊÇ·ñÔÚopenListÖĞ£¬ÈôÔÚ£¬Ôò±È½Ï¸üĞÂ£»Ã»ÔÚÔò×·¼Óµ½openListÖĞ
+    % åˆ¤æ–­è¿™äº›å­èŠ‚ç‚¹æ˜¯å¦åœ¨openListä¸­ï¼Œè‹¥åœ¨ï¼Œåˆ™æ¯”è¾ƒæ›´æ–°ï¼›æ²¡åœ¨åˆ™è¿½åŠ åˆ°openListä¸­
     for i = 1:size(child_nodes,1)
         child_node = child_nodes(i,:);
-        [in_flag,openList_idx] = ismember(child_node, openList, 'rows');%ismemberº¯Êı±íÊ¾×Ó½ÚµãÔÚopen±íÖĞÔò·µ»Ø1£¬ÅĞ¶Ïflag,Êä³ö´Ë×Ó½ÚµãÔÚopenlist±íÖĞµÄÎ»ÖÃ
-        g = openList_cost(min_idx, 1) + norm(parent_node - child_node);%°´ÕÕĞÂ¸¸½Úµã¼ÆËã´Ë×Ó½ÚµãµÄg,hÖµ
+        [in_flag,openList_idx] = ismember(child_node, openList, 'rows');%ismemberå‡½æ•°è¡¨ç¤ºå­èŠ‚ç‚¹åœ¨openè¡¨ä¸­åˆ™è¿”å›1ï¼Œåˆ¤æ–­flag,è¾“å‡ºæ­¤å­èŠ‚ç‚¹åœ¨openlistè¡¨ä¸­çš„ä½ç½®
+        g = openList_cost(min_idx, 1) + norm(parent_node - child_node);%æŒ‰ç…§æ–°çˆ¶èŠ‚ç‚¹è®¡ç®—æ­¤å­èŠ‚ç‚¹çš„g,hå€¼
         h = abs(child_node(1) - target_node(1)) + abs(child_node(2) - target_node(2));
         f = g+h;
         
-        if in_flag   % ÈôÔÚ£¬±È½Ï¸üĞÂgºÍf        
+        if in_flag   % è‹¥åœ¨ï¼Œæ¯”è¾ƒæ›´æ–°gå’Œf        
             if g < openList_cost(openList_idx,1)
-                openList_cost(openList_idx, 1) = g;%½«openlist_cost±íÖĞµÚid¸öÎ»ÖÃµÄµÚÒ»¸öÊı¸üĞÂÎªÒÔĞÂ¸¸½Úµã¼ÆËãµÄgÖµ
+                openList_cost(openList_idx, 1) = g;%å°†openlist_costè¡¨ä¸­ç¬¬idä¸ªä½ç½®çš„ç¬¬ä¸€ä¸ªæ•°æ›´æ–°ä¸ºä»¥æ–°çˆ¶èŠ‚ç‚¹è®¡ç®—çš„gå€¼
                 openList_cost(openList_idx, 3) = f;
                 openList_path{openList_idx,2} = [openList_path{min_idx,2}; child_node];
             end
-        else         % Èô²»ÔÚ£¬×·¼Óµ½openList
+        else         % è‹¥ä¸åœ¨ï¼Œè¿½åŠ åˆ°openList
             openList(end+1,:) = child_node;
             openList_cost(end+1, :) = [g, h, f];
             openList_path{end+1, 1} = child_node;
@@ -97,19 +97,19 @@ while flag
     end
    
     
-    % ´ÓopenListÒÆ³ıÒÆ¶¯´ú¼Û×îĞ¡µÄ½Úµãµ½ closeList
+    % ä»openListç§»é™¤ç§»åŠ¨ä»£ä»·æœ€å°çš„èŠ‚ç‚¹åˆ° closeList
     closeList(end+1,: ) =  openList(min_idx,:);
     closeList_cost(end+1,1) =   openList_cost(min_idx,3);
     closeList_path(end+1,:) = openList_path(min_idx,:);
-    openList(min_idx,:) = [];%openlist±íÖĞÒÑÌø³öµÄ×îĞ¡ÖµÎ»ÖÃÉèÎª¿Õ
+    openList(min_idx,:) = [];%openlistè¡¨ä¸­å·²è·³å‡ºçš„æœ€å°å€¼ä½ç½®è®¾ä¸ºç©º
     openList_cost(min_idx,:) = [];
     openList_path(min_idx,:) = [];
  
-    % ÖØĞÂËÑË÷£º´ÓopenListËÑË÷ÒÆ¶¯´ú¼Û×îĞ¡µÄ½Úµã£¨ÖØ¸´²½Öè£©
+    % é‡æ–°æœç´¢ï¼šä»openListæœç´¢ç§»åŠ¨ä»£ä»·æœ€å°çš„èŠ‚ç‚¹ï¼ˆé‡å¤æ­¥éª¤ï¼‰
     [~, min_idx] = min(openList_cost(:,3));
     parent_node = openList(min_idx,:);
     
-    % ÅĞ¶ÏÊÇ·ñËÑË÷µ½ÖÕµã
+    % åˆ¤æ–­æ˜¯å¦æœç´¢åˆ°ç»ˆç‚¹
     if parent_node == target_node
         closeList(end+1,: ) =  openList(min_idx,:);
         closeList_cost(end+1,1) =   openList_cost(min_idx,1);
@@ -119,10 +119,10 @@ while flag
 end
     
 
-%% »­Â·¾¶
+%% ç”»è·¯å¾„
 path_opt = closeList_path{end,2};
 path_opt(:,1) = path_opt(:,1)-0.5;
 path_opt(:,2) = path_opt(:,2)-0.5;
-scatter(path_opt(:,1), path_opt(:,2), 'k');%»æÖÆÉ¢µãÍ¼
+scatter(path_opt(:,1), path_opt(:,2), 'k');%ç»˜åˆ¶æ•£ç‚¹å›¾
 plot(path_opt(:,1), path_opt(:,2), 'k');
   
