@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*
 # Created by Xiaoju, for bilibili tutorials
 # https://linklab-uva.github.io/autonomousracing/assets/files/assgn4-print.pdf
-# 可正常运行，在原理简单的基础上，增加了PD，但参数没好好调
+# 可正常运行，在原理基础上，增加了PD，但参数没好好调
 
 import rospy
 import numpy as np
