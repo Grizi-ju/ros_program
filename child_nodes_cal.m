@@ -3,15 +3,15 @@ function child_nodes = child_nodes_cal(parent_node, m, n, obs, closeList)
 child_nodes = [];
 field = [1,1; n,1; n,m; 1,m];
 
-% µÚ1¸ö×Ó½Úµã
+% ç¬¬1ä¸ªå­èŠ‚ç‚¹
 child_node = [parent_node(1)-1, parent_node(2)+1];
-if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))%ÅĞ¶ÏµãÊÇ·ñÔÚ¶à±ßĞÎÄÚ
+if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))%åˆ¤æ–­ç‚¹æ˜¯å¦åœ¨å¤šè¾¹å½¢å†…
     if ~ismember(child_node, obs, 'rows')
         child_nodes = [child_nodes; child_node];
     end
 end
 
-% µÚ2¸ö×Ó½Úµã
+% ç¬¬2ä¸ªå­èŠ‚ç‚¹
 child_node = [parent_node(1), parent_node(2)+1];
 if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     if ~ismember(child_node, obs, 'rows')
@@ -19,7 +19,7 @@ if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     end
 end
 
-% µÚ3¸ö×Ó½Úµã
+% ç¬¬3ä¸ªå­èŠ‚ç‚¹
 child_node = [parent_node(1)+1, parent_node(2)+1];
 if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     if ~ismember(child_node, obs, 'rows')
@@ -27,7 +27,7 @@ if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     end
 end
 
-% µÚ4¸ö×Ó½Úµã
+% ç¬¬4ä¸ªå­èŠ‚ç‚¹
 child_node = [parent_node(1)-1, parent_node(2)];
 if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     if ~ismember(child_node, obs, 'rows')
@@ -35,7 +35,7 @@ if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     end
 end
 
-% µÚ5¸ö×Ó½Úµã
+% ç¬¬5ä¸ªå­èŠ‚ç‚¹
 child_node = [parent_node(1)+1, parent_node(2)];
 if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     if ~ismember(child_node, obs, 'rows')
@@ -43,7 +43,7 @@ if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     end
 end
 
-% µÚ6¸ö×Ó½Úµã
+% ç¬¬6ä¸ªå­èŠ‚ç‚¹
 child_node = [parent_node(1)-1, parent_node(2)-1];
 if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     if ~ismember(child_node, obs, 'rows')
@@ -51,7 +51,7 @@ if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     end
 end
 
-% µÚ7¸ö×Ó½Úµã
+% ç¬¬7ä¸ªå­èŠ‚ç‚¹
 child_node = [parent_node(1), parent_node(2)-1];
 if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     if ~ismember(child_node, obs, 'rows')
@@ -59,7 +59,7 @@ if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     end
 end
 
-% µÚ8¸ö×Ó½Úµã
+% ç¬¬8ä¸ªå­èŠ‚ç‚¹
 child_node = [parent_node(1)+1, parent_node(2)-1];
 if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     if ~ismember(child_node, obs, 'rows')
@@ -67,7 +67,7 @@ if inpolygon(child_node(1), child_node(2), field(:,1), field(:,2))
     end
 end
 
-%% ÅÅ³ıÒÑ¾­´æÔÚÓÚcloseListµÄ½Úµã
+%% æ’é™¤å·²ç»å­˜åœ¨äºcloseListçš„èŠ‚ç‚¹
 delete_idx = [];
 for i = 1:size(child_nodes, 1)
     if ismember(child_nodes(i,:), closeList , 'rows')
