@@ -1,21 +1,21 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
-# Created by Xiaoju, for bilibili tutorials
+# Created by Xiaoju, for bilibili tutorials, ID:小巨同学zz
 # https://linklab-uva.github.io/autonomousracing/assets/files/assgn4-print.pdf
-# 可正常运行，在原理基础上，增加了PD，但参数没好好调
+# 可正常运行，在wall_following.py的基础上，增加了PD
 
 import rospy
 import numpy as np
 from sensor_msgs.msg import LaserScan
 from ackermann_msgs.msg import AckermannDrive, AckermannDriveStamped
 
-KP=1.00
-KD=0.007
+KP=1.000
+KD=0.005
 prev_error=0
 FILTER_VALUE = 10.0
 DESIRED_DISTANCE_RIGHT = 1.0
 
-# 获取激光雷达射线测量距离
+# 获取激光雷达测量距离,可得到射线ab的长度
 def get_range(data, angle, deg=True):
     if deg:
         angle = np.deg2rad(angle)
@@ -27,10 +27,10 @@ def get_range(data, angle, deg=True):
 
 def wall_following_callback(data):
     
-    # 计算公式，得到error
-    THETA = np.pi / 180 * 60
-    b = get_range(data, -45)
-    a = get_range(data, -45 + np.rad2deg(THETA))
+    # 1、计算公式：根据雷达信息，得到error
+    THETA = np.pi / 180 * 45
+    a = get_range(data, 45)
+    b = get_range(data, 45 + np.rad2deg(THETA))
     alpha = np.arctan((a * np.cos(THETA) - b) / (a * np.sin(THETA)))
     AB = b * np.cos(alpha)
 
@@ -39,20 +39,26 @@ def wall_following_callback(data):
     print("projected_dis=",projected_dis)
     print("Error=",error)
 
-    # PID控制
-    drive_msg = AckermannDriveStamped()
+    # 2、PID控制,公式代替条件判断
     tmoment = rospy.Time.now().to_sec()
     prev_tmoment = 0.0
     del_time = tmoment - prev_tmoment
-    drive_msg.drive.steering_angle = -(KP*error + KD*(error - prev_error)/del_time)
+    steering_angle = -(KP*error + KD*(error - prev_error)/del_time)
     prev_tmoment = tmoment
-    if np.abs(drive_msg.drive.steering_angle) > np.pi / 180 * 20.0:
-        drive_msg.drive.speed = 1.0
-    elif np.abs(drive_msg.drive.steering_angle) > np.pi / 180 * 10.0:
-        drive_msg.drive.speed = 2.0
+
+    if np.abs(steering_angle) > np.pi / 180 * 20.0:
+        speed = 1.5
+    elif np.abs(steering_angle) > np.pi / 180 * 10.0:
+        speed = 2.5
     else:
-        drive_msg.drive.speed = 3.0
+        speed = 3.5
+
+    # 3、把速度、转向角发布出去
+    drive_msg = AckermannDriveStamped()
+    drive_msg.drive.steering_angle = steering_angle
+    drive_msg.drive.speed = speed
     drive_pub.publish(drive_msg)
+
 
 
 if __name__ == '__main__': 
@@ -64,3 +70,4 @@ if __name__ == '__main__':
     
   except rospy.ROSInterruptException:
     pass
+
