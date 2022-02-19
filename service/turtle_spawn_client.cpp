@@ -29,7 +29,6 @@ int main(int argc, char** argv)
 
 	// 显示服务调用结果
 	ROS_INFO("Spwan turtle successfully [name:%s]", srv.response.name.c_str());
-
 	return 0;
 };
 
