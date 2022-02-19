@@ -29,7 +29,7 @@ int main(int argc, char **argv)
         //海龟先以x轴以线速度1进行移动，迭代到5次时，x轴线速度为0,海龟绕z轴转动90度，并循环执行
 
         pub.publish(msg);
-
+        
         //发布消息
         ROS_INFO_STREAM("Sending random velocity command: "
                         << "linear = " << msg.linear.x 
