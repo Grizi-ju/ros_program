@@ -15,7 +15,7 @@ def talker():
            
         pub.publish(vel_cmd)
         rate.sleep()
-
+      
 if __name__ == '__main__':
     try:
         talker()
