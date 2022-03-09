@@ -14,7 +14,8 @@ def client():
 
     # 1、订阅move_base服务器的消息  
     rospy.init_node('simple_goal', anonymous=True)  
-    move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)   
+    move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)  
+    move_base.wait_for_server(rospy.Duration(5.0))  
     rospy.loginfo("Connected to move base server")  
 
 
@@ -23,6 +24,7 @@ def client():
     goal.target_pose.header.frame_id = 'map'  
     goal.target_pose.header.stamp = rospy.Time.now()  
     goal.target_pose.pose.position.x = 2.0
+    goal.target_pose.pose.position.y = 1.0
     goal.target_pose.pose.orientation.w = 1.0
 
 
