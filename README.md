@@ -1,17 +1,26 @@
 **《ROS编程实操案例》**
 
-围绕四大通信方式（Topic、Service、Action、Param）的编程实操小项目，适合初学者入门ROS编程
-包含：
+1. 围绕四大通信方式（Topic、Service、Action、Param）的编程实操小项目，适合初学者入门ROS编程
 
-Topic：创建一个发布者、订阅者、二者结合；
+2. 改进路径规划算法（持续更新...）
 
-Service：生成多只乌龟、开关触发小车运动；
+**Topic：** 
+- 创建一个发布者、订阅者、二者结合
 
-Action：单目标点导航、多点巡航、调参；
+**Service：** 
+- 生成多只乌龟
+- 开关触发小车运动
 
-Param：更新中...
+**Action：** 
+- 单目标点导航、多点巡航、调参
 
-path_planning：A星算法matlab、python代码（带详细注释）
+**Param：** 待更新
+
+**Path_planning：** 
+- A星算法matlab、python代码
+- 基于python的5中改进方式——距离公式、动态加权、搜索邻域、贝塞尔曲线、双向搜索
+
+***
 
 配套视频均发布在B站：小巨同学zz
 
